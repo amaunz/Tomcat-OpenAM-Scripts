@@ -1,0 +1,13 @@
+1. Clone this to ~/bin (unfortunate naming, will clash with existing dir)
+2. Add a file 'config.cfg' to bin. Insert key-value pairs there. Keys are:
+
+OPENAM_ADMIN        # OPENAM admin id
+OPENAM_ADMIN_PW     # 
+OPENAM_SVC_PW       # Encrypt pw for passwords in backups
+OPENAM_PASSWD_PATH  # this file needs to be chmod 400 and contain only $OPENAM_ADMIN_PW
+NAIL_USER           # Automated mailing user
+NAIL_USER_PW        #
+PREF                # SSH prefix for remote machine: 'user@host'
+LDAP_USER           # OPENAM LDAP USER
+LDAP_USER_PWD       #
+LDAP_USER_MAIL      #
