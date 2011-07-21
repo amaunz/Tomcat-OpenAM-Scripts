@@ -14,6 +14,9 @@ load_config
 
 SEND_MAIL="$HOME/bin/send-mail.sh"
 WWWLOGIN="http://opensso.in-silico.ch:8180/opensso/UI/Login"
+TOMCAT_VER="6.0.26"
+TOMCAT_DIR="$HOME/apache-tomcat-$TOMCAT_VER"
+
 
 dir="`pwd`"
 if [ ! $dir = $HOME ]; then
@@ -33,11 +36,9 @@ r=`ps ax | grep java | grep tomcat | grep -v grep`
 if [ -z "$r" ]; then 
 
     echo "Tomcat not running- spawning..."
-    mv $HOME/pol.db $HOME/pol.db.bck
-    cp $HOME/pol.db.bck $HOME/pol.db
-    find $HOME/apache-tomcat-6.0.26/logs -name '*.log' -delete
-    find $HOME/apache-tomcat-6.0.26/temp -name '*.xml' -delete
-    $HOME/apache-tomcat-6.0.26/bin/startup.sh
+    find $TOMCAT_DIR/logs -name '*.log' -delete
+    find $TOMCAT_DIR/temp -name '*.xml' -delete
+    $TOMCAT_DIR/bin/startup.sh
 
     ran_startup="true"
     to="$LDAP_USER_MAIL"
@@ -55,7 +56,7 @@ if [ $ran_startup == "false" ]; then
 
         echo "Tomcat running- killing and repawning..."
         echo "Trying to shut down tomcat..."
-        $HOME/apache-tomcat-6.0.26/bin/shutdown.sh
+        $TOMCAT_DIR/bin/shutdown.sh
         sleep 60
         r=`ps ax | grep java | grep tomcat | grep -v grep`
         if [ -n "$r" ]; then        
@@ -64,12 +65,10 @@ if [ $ran_startup == "false" ]; then
         fi
         sleep 30
         echo "Copying DB, clearing logs..."
-        mv $HOME/pol.db $HOME/pol.db.bck
-        cp $HOME/pol.db.bck $HOME/pol.db
-        find $HOME/apache-tomcat-6.0.26/logs -name '*.log' -delete
-        find $HOME/apache-tomcat-6.0.26/temp -name '*.xml' -delete
+        find $TOMCAT_DIR/logs -name '*.log' -delete
+        find $TOMCAT_DIR/temp -name '*.xml' -delete
         echo "Spawning Tomcat..."
-        $HOME/apache-tomcat-6.0.26/bin/startup.sh
+        $TOMCAT_DIR/bin/startup.sh
 
         to="$LDAP_USER_MAIL"
         subject="Tomcat killed."
